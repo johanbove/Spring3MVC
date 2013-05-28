@@ -23,4 +23,57 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 			</list>
 		</property>
 	</bean>
+	<!-- i18n & L10n -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	<bean id="localeChangeInterceptor"
+		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="lang" />
+	</bean>
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
+	<!-- First we have added themeSource bean. Notice that this bean is an instance 
+		of class ResourceBundleThemeSource and we also have specified a property 
+		basenamePrefix with value “theme-”. ResourceBundleThemeSource class will 
+		load the property files containing theme definition starting with prefix 
+		“theme-”. Thus, if we have defined 3 new themes in our project (default, 
+		black and blue) then we will create 3 property files while will have certain 
+		configuration properties. Also these files will be placed under the project 
+		classpath. -->
+	<bean id="themeSource"
+		class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+		<property name="basenamePrefix" value="theme-" />
+	</bean>
+	<!-- Theme Change Interceptor and Resolver definition -->
+	<!-- Next, we defined an interceptor bean themeChangeInterceptor which is 
+		an instance of class org.springframework.web.servlet.theme.ThemeChangeInterceptor. 
+		Also note here that we have specified a property paramName with value theme. 
+		This interceptor is invoked whenever a request is made with parameter “theme” 
+		with different values. -->
+	<bean id="themeChangeInterceptor"
+		class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
+		<property name="paramName" value="theme" />
+	</bean>
+	<!-- Once the themeChangeInterceptor intercepts the change in the theme, 
+		the changes are then stored in the cookies using class org.springframework.web.servlet.theme.CookieThemeResolver. 
+		We have configured this class in our spring-servlet.xml configuration file. 
+		Also note that we have specified default theme name with this bean. -->
+	<bean id="themeResolver"
+		class="org.springframework.web.servlet.theme.CookieThemeResolver">
+		<property name="defaultThemeName" value="default" />
+	</bean>
+	<bean id="handlerMapping"
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+				<ref bean="themeChangeInterceptor" />
+			</list>
+		</property>
+	</bean>
 </beans>
