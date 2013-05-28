@@ -13,11 +13,11 @@
             <td><form:input path="lastname" /></td>
         </tr>
         <tr>
-            <td><form:label path="lastname"><spring:message code="label.email"/></form:label></td>
+            <td><form:label path="email"><spring:message code="label.email"/></form:label></td>
             <td><form:input path="email" /></td>
         </tr>
         <tr>
-            <td><form:label path="lastname"><spring:message code="label.telephone"/></form:label></td>
+            <td><form:label path="telephone"><spring:message code="label.telephone"/></form:label></td>
             <td><form:input path="telephone" /></td>
         </tr>
         <tr>
